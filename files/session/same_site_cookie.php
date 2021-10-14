@@ -1,8 +1,7 @@
-<?php 
+<?php
     $sess_name = session_name();
-    if (session_start()) {
-        setcookie($sess_name, session_id(),0, '/; samesite=strict');
-    }
+    session_start()
+    setcookie($sess_name, session_id(),0, '/; samesite=strict');
 ?>
 
 <!DOCTYPE html>

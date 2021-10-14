@@ -7,6 +7,6 @@
 </body>
 </html>
 <script>
-  // Run rule_3.js and come to this url with updated xss payload 
+  // Lancer rule_3.js et retourner sur l'url fourni par le rule_3.js
   alert(<?php echo ($_GET['xss']) ?>)
 </script>
