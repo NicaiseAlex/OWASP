@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Owasp</title>
-</head>
-<div>
-  <span style="background-url: javascript:alert(1)"></span>
-  </div>
-</body>
+  <head>
+    <title>Owasp</title>
+  </head>
+  <body>
+    <div>
+      Hello world
+    </div>
+    <style>
+      body {
+          background-url: <?= htmlspecialchars($_GET['xss']) ?>;
+          color: red;
+      }
+    </style>
+  </body>
 </html>
-
-<style>
-  body {
-      background-url: "javascript:alert(1)";
-  }
-  div {
-      background-url: javascript\3a alert\28 1\29;
-  }
-</style>

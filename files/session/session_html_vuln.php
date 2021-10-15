@@ -12,9 +12,9 @@
     </head>
     <body>
         <div id="test">
-        </div>
+    </div>
     </body>
     <script>
-            window.document.getElementById('test').innerHTML = <?php echo $_GET['xss'] ?>
+        window.document.getElementById('test').innerHTML = <?php echo $_GET['xss'] ?>
     </script>
 </html>
