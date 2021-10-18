@@ -1,3 +1,3 @@
 <html>
-	<?php echo 'Bonjour ' . $_GET["name"] . '!'; ?>
+	<?php echo 'Bonjour ' . $_GET["xss"] . '!'; ?>
 </html>
