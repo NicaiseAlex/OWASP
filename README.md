@@ -6,7 +6,11 @@ Same Origin Policy : Politique de sécurité, implémenté du cotès client et p
   
   
 1. Explain what are the component of the following URL (their name and usage): http://www.host.com:81/a/b/c.html?user=Alice&year=2016#p2  
-
+Protocol http  
+Le domain du site = host.com avec le port 81  
+Le chemin vers la ressource /a/b/c.html  
+Valeur intégré dans l'url user=Alice et year=2016  
+#p2 représente le fragment (permet de pointer vers un endroit de la page par exemple)  
   
 2. What is an origin in the Same Origin Policy ?  
 composants : domaine, port, chemin
