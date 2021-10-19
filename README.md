@@ -15,13 +15,13 @@ composants : domaine, port, chemin
 Avec un <iframe src="http://a.com/a.html"> </iframe> pour cette exemple il faut que l'url de l'iframe soit identique a celui de l'url. 
 Origine de cookie : domain, chemin et aussi si le cookie est sucurisée ou non.
   
-4. Can an http breader be changed by an attacker in the network ? Justify
+4. Can an http breader be changed by an attacker in the network ? Justify  
   ....
-5. Can a cookie be changed by an attacker in the network ? justify
+5. Can a cookie be changed by an attacker in the network ? justify  
   ....
-6. Can a cookie be changed by an attacker in power of a JavaScript script in a page of the same origin ? Justify
+6. Can a cookie be changed by an attacker in power of a JavaScript script in a page of the same origin ? Justify  
   ....
-7. Can a cookie be changed by an attacker in power of JavaScript script in a page of a different origin ? Justify
+7. Can a cookie be changed by an attacker in power of JavaScript script in a page of a different origin ? Justify  
   ....
 8. What are the parameters to set (on server side) for a cookie to be best protected from attackers? Justify. Do those parameters help protect the integrity of the value of the cookie?  
   ....  
