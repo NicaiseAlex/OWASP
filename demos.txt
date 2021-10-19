@@ -1,0 +1,166 @@
+/!\les cookies sont en http only pour pas être stockés sur la mémoire javascript car sinon tout est <script>. 
+Le serveur va créer le cookie donc c'est lui qui doit le mettre en http only.
+Le cookie a 3 "portées" : le chemin, le domain et s'il est secure ou pas
+
+==========================================Définitions=========================================================
+
+DOM document object modèle, on vient stocker la mémoire d'une page html en tant qu'object dans la mémoire javascript. C'est un W3C standard.
+
+Savoir la définition de same origin policy : Une politique de sécurité implémentée dans les navigateurs implémentées côté client, qui permet de réguler l'accès aux sources du DOM, des cookies, des requetes http qui sortent du navigateur etc
+
+Window est l'objet globale de la mémoire javascript
+
+==========================================Questions===========================================================
+
+1) Explain what are the components of the following URL (their name and usage): http://www.host.com:81/a/b/c.html?user=Alice&year=2016#p2
+
+http: -> Scheme, protocol
+//www.host.com: -> Host name, domain
+81 -> port number
+/a/b/c.html -> hierarchical portion, path
+?user=Alice&year=2016 -> querry
+#p2 -> fragment, sert à pointer sur une ressource secondaire.
+
+2) What is an origin in the Same Origin Policy implemented by browsers?
+
+Une politique de sécurité implémentée dans les navigateurs implémentés côté client, qui permet de réguler l'accès aux sources du DOM, des cookies, des requetes http qui sortent du navigateur etc
+Même origine ==> le chemin, le domain et le port 
+Si un des 3 est différent alors ce n'est pas la même origine.
+
+3) How to protect a web page using the Same Origin Policy?
+
+Avec un IFrame. On peut l'utiliser comme ceci : <iframe src="http://etc.com"> </iframe>
+Window est l'objet globale de la mémoire javascript.
+Le iframe créer deux objects globaux window dans la mémoire de javascript : un seul des deux va être relié au DOM et les deux seront séparés si on détecte une origine différente. Sinon ils peuvent communiquer.
+Le CORS peut être une protection de plus.
+Le cookie a 3 "portées" : le chemin, le domain et s'il est secure ou pas
+
+4) Can an http header be changed by an attacker in the network? Justify
+
+Oui, car tout est en claire, rien n'est crypté. On peut le modifier avec wireshark par exemple.
+
+5) Can a cookie be changed by an attacker in the network? Justify.
+
+Oui, avec setcookie(same name, new value, etc ...) et à condition qu'il ne soit pas protégé par httponly ou samesite:strict (ex : exo4)
+
+6) Can a cookie be changed by an attacker in power of a JavaScript script in a page of the same origin? Justify.
+
+Oui on peut, si on met un script avec src=gadget.js par exemple et que le gadget fasse un setcookie.
+
+7) Can a cookie be changed by an attacker in power of JavaScript script in a page of a different origin? Justify.
+
+Oui on peut aussi avec la même façon si le gadget est sur un origine différente mais cela implique de ne pas avoir de protection comme un iframe par exemple.
+
+8)  What are the parameters to set (on server side) for a cookie to be best protected from attackers? Justify. Do those parameters help protect the integrity of the value of the cookie?
+
+On peut le mettre en samesite:strict , en httponly et en secure. 
+Httponly permet de mettre le cookie dans une zone mémoire différente que celle de javascript : un script ne peut pas récuperer ou modifier sa valeur.
+Samesite:strict permet de bloquer les envoies de cookies vers des origines différentes : cela protège de fuite d'informations et octroie une protection contre les requêtes forgées d'une autre origine.
+secure permet que l'envoie d'un cookie se fasse à travers une connexion HTTPS (SSL/TLS). On se défend contre une attaque "Man-in-the-middle" qui pourrait prendre le sessionID en examinant le web traffic sinon.
+On peut aussi modifier les domain et path attributs pour ne pas les laisser trop permissifs : un cookie pourrait alors être intercepté/redirigé.
+
+9) What is the Content Security Policy and what is it useful for?
+
+C'est dans le header de la réponse http. On peut restreindre l'origine du contenu de la page web à une liste de site que l'on a pré définis / autorisés (comme une white list de scripts).
+On peut se prémunir contre l'injection de code par exemple et Cros Site Scripting =XSS.
+
+10) Why a random token in web pages can protect against CSRF attacks? What happens if the token is not random? What happens if the token is random but only stored in a cookie?
+
+CSRF = cross site request forgery : prendre le controle d'une session pour lancer des commandes non autorizées.
+Il va chercher un token puis l'utilise pour se connecter. Si le token est random, alors la fois où il regarde le token il verra une valeur qu'il ne peut plus utiliser pour se connecter ensuite.
+Si le token est random mais stocké dans un cookie, alors bien que random, il sera valide le temps de durée de vie du cookie et peut donc créer une faille pendant un certain temps.
+
+==========================================Démos===============================================================
+
+XSS rule 0 : 	- lancer MAMP (ou autre serveur apache)
+		- aller sur localhost/xss_rule0/with_exploit.php (aller là où on a stocker le fichier sur le serveur)
+		- rajouter à l'url ?xss=alert(document.domain)
+		- constater que ça apparait bien dans le script du code source
+		- tester la même chose sur le fichier with_defense et voir que c'est bien dans une div
+		- le but est de ne pas avoir de code non voulu que l'on run
+
+XSS rule 1 : 	- lancer depuis un ide l'html avec la faille
+		- inspecter l'élément et regarder la console
+		- rentrer <script>alert(document.domain);</script>
+		- faire la même chose avec l'html de défense
+		- voir que les balises < et > sont encodées
+
+XSS rule 2 : 	- lancer MAMP (ou autre serveur apache)
+		- aller sur localhost/xss_rule2/with_exploit.php (aller là où on a stocker le fichier sur le serveur)
+		- tester de changer la valeur de 'name'
+		- tester avec "><script>alert(document.domain);</script>  (la faille est là)
+		
+XSS rule 3 : 	- lancer MAMP (ou autre serveur apache)
+		- aller sur localhost/xss_rule3/with_exploit.php (aller là où on a stocker le fichier sur le serveur)
+		- rajouter à l'url ?xss=1);alert(2
+		- on voit qu'il y a deux popup à la suite
+		- tester la même chose avec le fichier with_defense et voir qu'on a que la première popup (qui est voulue)
+
+XSS rule 4 :	- lancer MAMP (ou autre serveur apache)
+		- aller sur localhost/xss_rule4/with_exploit.php (aller là où on a stocker le fichier sur le serveur)
+		- une pop up apparait et dans le code source on voit qu'elle est dans une balise de style (untruested data)
+		- aller sur le fichier de defense maintenant
+		- il n'y a pas de popup, le code source montre que c'est encodé 
+
+XSS rule 5 : 	- lancer MAMP (ou autre serveur apache)
+		- aller sur localhost/xss_rule5/with_exploit.php (aller là où on a stocker le fichier sur le serveur)
+		- on peut tester avec ?xss=landscape.jpg pour montrer que ça marche
+		- rajouter à l'url ?xss=woops"%20onerror="alert(%27boom%27)
+		- montrer dans le code que c'est bien la src de l'image qui a permis cette injection de pop up
+		- tester avec le fichier de defense et voir que c'est encoder donc ça ne marche pas
+
+XSS rule 6 : 	- lancer MAMP (ou autre serveur apache)
+		- aller sur localhost/xss_rule6/with_exploit.php (aller là où on a stocker le fichier sur le serveur)
+		- on peut tester avec ?xss=%27<img%20src%20=landscape.jpg%20>%27 pour montrer que ça marche
+		- rajouter à l'url ?xss=%27<img%20src=woops%20onerror=alert("Boom")>%27
+		- on a bien une pop up présente
+		- faire la même chose avec le fichier with_defense.php et voir que l'on a pas de popup, le code à été sanitized
+
+XSS rule 7 : 	- lancer MAMP (ou autre serveur apache)
+		- aller sur localhost/xss_rule7/with_exploit.php (aller là où on a stocker le fichier sur le serveur)
+		- tester en ajoutant ?xss=<img%20src=%271%27%20onerror=%27javascript:alert(document.cookie);%27/> une javascript: est utilisé dans l'url et fonctionne pour récupérer un cookie
+		- tester sur le fichier with_defense.php et voir un message d'erreur qui apparait dans la div :bloque les apparitions de 'javascript:'
+
+XSS rule 8 :	- exactement comme la 6, lol
+
+DOM based XSS : - Rentrer n'importe quoi dans l'input : l'ajoute normalement dans la liste
+		- Rentrer : <img src=1 onerror=alert(document.domain)>
+		- Ajoute une image avec erreur qui exécute le script alert
+		- Viens du innerHTML : permet de rajouter du html directement dans le fichier html : ici ajoute l'image
+
+SessionID :	- lancer MAMP (ou autre serveur apache)
+		- aller sur localhost/sessionID/with_exploit.php (aller là où on a stocker le fichier sur le serveur)
+		- mettre un nom
+		- on voit que le cookie est en PHPSESSID donc en php = c'est pas bien ça donne des infos
+		- on voit aussi que la valeur du cookie donne des infos sur le nom de l'utilisateur = c'est pas bien non plus
+		- la valeur est très petite (elle devrait être codée sur au moins 128 bites ou 16 octets) = avec du brute force on peut le trouver
+		- tester la même chose sur la défense.
+
+Session httponly : - lancer MAMP (ou autre serveur apache)
+		- aller sur localhost/session_cookie/with_exploit.php (aller là où on a stocker le fichier sur le serveur)
+		- voir que une popup peut récupérer le cookie de session
+		- voir sur la défense que le cookie ne s'affiche plus dans la popup car il est en httponly (def en haut)
+
+Session_sop : 	- lancer MAMP (ou autre serveur apache)
+		- aller sur localhost/session_sop/with_exploit.php (aller là où on a stocker le fichier sur le serveur)
+		- voir la popup qui récupère le cookie de session : le gadget.js se trouve sur une origine différente
+		- en defense le iframe bloque la communication
+
+XML : 		- lancer MAMP (ou autre serveur apache)
+		- aller sur localhost/XML-XEE/XEE_exploit.php (aller là où on a stocker le fichier sur le serveur)
+		- on voit que le fichier secret est chargé (car le loader est autorisé à lire les balises ENTITY dans le fichier lu
+		- en défense, cette fonctionnalités est désactivée et on ignore la balise qui venait chercher un fichier sur notre système
+
+Sql injection : -Lancer depuis serveur Apache
+		- Se loger en utilisant par exmple l'utilisateur Jhon/azerty
+		- Vérifier que sa marche
+		- Se loger en utilisant uniquement Jhon, ne marche pas car mdp requis
+		- Se loger en utilisant Jhon';--  ( injection SQL ici où l'on saute la vérification du mdp)
+		- Protection en évitant de rajouter les infos directement dans la requête, mais en les convertissant en texte SQLITE
+
+
+
+
+
+
+
