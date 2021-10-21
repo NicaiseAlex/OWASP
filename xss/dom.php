@@ -3,7 +3,7 @@
 <html>
 <head>
   <title>Dom based XSS</title>
-  <script type="text/javascript" src="./purify.js"></script>
+  <script type="text/javascript" src="./purify.min.js"></script>
 </head>
 <body>
 <div id="test">
