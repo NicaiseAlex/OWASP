@@ -40,7 +40,8 @@ On peut aussi modifier les domain et path attributs pour ne pas les laisser trop
 9. What is the Content Security Policy and what is it useful for?    
 C'est dans le header de la réponse http. On peut restreindre l'origine du contenu de la page web à une liste de site que l'on a pré définis / autorisés (comme une white list de scripts).  
 On peut se prémunir contre l'injection de code par exemple et Cros Site Scripting =XSS.10.  
-Why a random token in web pages can protect against CSRF attacks? What happens if the token is not random? What happens if the token is random but only stored in a cookie?  
+  
+10. Why a random token in web pages can protect against CSRF attacks? What happens if the token is not random? What happens if the token is random but only stored in a cookie?  
 CSRF = cross site request forgery : prendre le controle d'une session pour lancer des commandes non autorizées.  
 Le token permet de créer un lien entre les pages pour ne pas avoir une mauvaise requete qui tombe.
 Si le token est pas random on peut réutiliser un token de quelqu'un pour charger ses informations par exemples.
