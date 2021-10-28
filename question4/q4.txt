@@ -1,12 +1,13 @@
-Does previous item blabla 
+Does the previous item work if the gadget is inside a frame? 
 
 Oui, il faut que l'iframe ait une page html en src sinon si tu met directement le scritp ca va juste l'afficher dans la page.
 Après dans ta apge html si tu met la balise script, normalement le cookie est pas envoyé vers le serveur 2 (SOP)
 
-And if gadget blabla
+and if gadget is inside a script and the cookie is initially set as httponly?
 
 On ne peut pas parce que HTTPOnly empêche l'accès ay cookie via JS
 
-And if gadget is in script
+and if gadget is in script and the cookie is initially set as secure? Justify all
+your answers.
 
 Si secur, alors on peut quand même l'envoyer, mais seulement avevc https.
