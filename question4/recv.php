@@ -27,5 +27,5 @@ echo "You have CORS!";
 }
 
 cors();
-echo $_GET['Cookie1'];
+echo $_GET[cookie1];
 ?>
